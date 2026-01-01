@@ -5,6 +5,7 @@ function App() {
   const [commonWords, setCommonWords] = useState(null);
   const [inputText, setInputText] = useState("");
   const [uncommonWords, setUncommonWords] = useState([]);
+  const [frequencyMap, setFrequencyMap] = useState(null);
 
   const loadCommonWords = async () => {
     try {
@@ -21,6 +22,28 @@ function App() {
       return commonWordSet;
     } catch (error) {
       console.log("error while loading words file", error);
+    }
+  };
+
+  const loadFrequencyWords = async () => {
+    try {
+      const res = await fetch("/wordsData/unigram_freq.csv");
+      const text = await res.text();
+      const lines = text.split("\n");
+      const map = new Map();
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) {
+          continue;
+        }
+        const [word, count] = line.split(",");
+        map.set(word.toLowerCase(), Number(count));
+      }
+      setFrequencyMap(map);
+      console.log(map);
+      console.log("Loaded frequency words:", map.size);
+    } catch (error) {
+      console.log("error while loading frequency file", error);
     }
   };
 
@@ -67,6 +90,10 @@ function App() {
 
     fetchWords();
   }, []);
+
+  useEffect(() => {
+    loadFrequencyWords();
+  }, [uncommonWords]);
 
   return (
     <>
