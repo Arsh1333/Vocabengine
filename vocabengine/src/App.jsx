@@ -6,13 +6,14 @@ function App() {
   const [inputText, setInputText] = useState("");
   const [uncommonWords, setUncommonWords] = useState([]);
 
-
-  const meaning = async () => {
+  const meaning = async (word) => {
     try {
       const res = await fetch(
-        `https://api.dictionaryapi.dev/api/v2/entries/en/hello`
+        `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
       );
-      console.log(res);
+      // console.log(res.body.json());
+      const data = await res.json();
+      console.log(data);
     } catch (error) {
       console.log(
         "Error while getting meaning from meaning from dictionary api",
@@ -83,10 +84,6 @@ function App() {
     fetchWords();
   }, []);
 
-  useEffect(() => {
-    meaning();
-  }, [uncommonWords]);
-
   return (
     <>
       <div>
@@ -105,6 +102,7 @@ function App() {
             className="btn btn-neutral join-item ml-4"
             onClick={() => {
               const words = findUncommonWords(inputText, commonWords);
+              console.log(words);
               setUncommonWords(words);
             }}
           >
@@ -113,8 +111,18 @@ function App() {
         </div>
         <div className="mt-6">
           {uncommonWords.map((word) => (
-            <span key={word} className="badge badge-outline mr-2 mb-2">
-              {word}
+            <span
+              key={word}
+              className="badge text-yellow-100 badge-outline mr-2 mb-2"
+            >
+              <button
+                onClick={() => {
+                  meaning(word);
+                  console.log("Word clicked");
+                }}
+              >
+                {word}
+              </button>
             </span>
           ))}
         </div>
