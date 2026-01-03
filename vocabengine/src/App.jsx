@@ -5,6 +5,8 @@ function App() {
   const [commonWords, setCommonWords] = useState(null);
   const [inputText, setInputText] = useState("");
   const [uncommonWords, setUncommonWords] = useState([]);
+  // const [meaningOfWord, setMeaningOfWord] = useState(false);
+  const [meaningData, setMeaningData] = useState([]);
 
   const meaning = async (word) => {
     try {
@@ -13,6 +15,8 @@ function App() {
       );
       // console.log(res.body.json());
       const data = await res.json();
+      // setMeaningOfWord(true);
+      setMeaningData(data[0].meanings);
       console.log(data);
     } catch (error) {
       console.log(
@@ -102,7 +106,6 @@ function App() {
             className="btn btn-neutral join-item ml-4"
             onClick={() => {
               const words = findUncommonWords(inputText, commonWords);
-              console.log(words);
               setUncommonWords(words);
             }}
           >
@@ -118,7 +121,6 @@ function App() {
               <button
                 onClick={() => {
                   meaning(word);
-                  console.log("Word clicked");
                 }}
               >
                 {word}
@@ -126,6 +128,37 @@ function App() {
             </span>
           ))}
         </div>
+        {meaningData && (
+          <div className="mt-8 space-y-6">
+            {meaningData.map((meaning, meaningIndex) => (
+              <div
+                key={meaningIndex}
+                className="rounded-xl border border-gray-700 bg-gray-900/60 p-5 shadow-sm"
+              >
+                <h2 className="mb-3 text-lg font-semibold capitalize text-indigo-400">
+                  {meaning.partOfSpeech}
+                </h2>
+
+                <ul className="space-y-3">
+                  {meaning.definitions.map((def, defIndex) => (
+                    <li
+                      key={defIndex}
+                      className="rounded-lg bg-gray-800/70 p-4 text-sm text-gray-200"
+                    >
+                      <p className="leading-relaxed">{def.definition}</p>
+
+                      {def.example && (
+                        <p className="mt-2 border-l-2 border-indigo-500 pl-3 text-xs italic text-gray-400">
+                          “{def.example}”
+                        </p>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
