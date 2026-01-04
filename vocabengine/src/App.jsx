@@ -7,9 +7,11 @@ function App() {
   const [uncommonWords, setUncommonWords] = useState([]);
   // const [meaningOfWord, setMeaningOfWord] = useState(false);
   const [meaningData, setMeaningData] = useState([]);
+  const [error, setError] = useState("");
 
   const meaning = async (word) => {
     try {
+      setError("");
       const res = await fetch(
         `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
       );
@@ -17,8 +19,9 @@ function App() {
       const data = await res.json();
       // setMeaningOfWord(true);
       setMeaningData(data[0].meanings);
-      console.log(data);
     } catch (error) {
+      setMeaningData([]);
+      setError(error);
       console.log(
         "Error while getting meaning from meaning from dictionary api",
         error
@@ -82,7 +85,6 @@ function App() {
     const fetchWords = async () => {
       const set = await loadCommonWords();
       setCommonWords(set);
-      console.log("Loaded common words:", set);
     };
 
     fetchWords();
@@ -157,6 +159,15 @@ function App() {
                 </ul>
               </div>
             ))}
+          </div>
+        )}
+      </div>
+      <div>
+        {error && (
+          <div className="mt-8 rounded-xl border border-red-500/50 bg-red-900/20 p-5 text-center">
+            <p className="text-red-400 font-medium">
+              No definitions found. Please try another word!
+            </p>
           </div>
         )}
       </div>
