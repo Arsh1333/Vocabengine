@@ -18,8 +18,9 @@ function App() {
        const res = await fetch(
          `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
        );
-       // console.log(res.body.json());
+       //  console.log(res.body.json());
        const data = await res.json();
+       console.log(data);
        // setMeaningOfWord(true);
        setMeaningData(data[0].meanings);
      } catch (error) {
@@ -163,10 +164,16 @@ function App() {
                        key={defIndex}
                        className="rounded-lg bg-gray-800/70 p-4 text-sm text-gray-200"
                      >
-                       <p className="leading-relaxed">{def.definition}</p>
+                       <div className="leading-relaxed">
+                         <p className="text-xs text-gray-400">Definitions: </p>
+                         {def.definition}
+                       </div>
 
                        {def.example && (
                          <p className="mt-2 border-l-2 border-indigo-500 pl-3 text-xs italic text-gray-400">
+                           <span className="text-xs text-gray-400">
+                             Example:{" "}
+                           </span>
                            “{def.example}”
                          </p>
                        )}
