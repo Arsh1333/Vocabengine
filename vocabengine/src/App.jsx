@@ -215,12 +215,15 @@ function App() {
             <div>
               {wordMeaning && (
                 <div className="mb-6 flex items-center justify-between rounded-xl border border-gray-700 bg-gray-900/70 px-5 py-4">
-                  <h1 className="text-3xl font-semibold tracking-wide text-indigo-400">
-                    <span className="text-gray-500">Word:</span> {wordMeaning}{" "}
-                    <span className="text-green-200 text-xs cursor-pointer">
-                      ({rarity})
+                  <div className="flex items-center gap-3">
+                    <h1 className="text-3xl font-semibold tracking-tight text-indigo-400">
+                      {wordMeaning}
+                    </h1>
+
+                    <span className="flex items-center gap-1 rounded-full bg-green-400/10 px-2.5 py-0.5 text-xs text-green-300">
+                      {rarity}
                     </span>
-                  </h1>
+                  </div>
 
                   <button
                     className="rounded-full bg-gray-800 px-3 py-1 text-xs text-gray-300 hover:bg-red-500 hover:text-white transition"
