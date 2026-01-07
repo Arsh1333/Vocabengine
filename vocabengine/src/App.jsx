@@ -10,6 +10,9 @@ function App() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [wordMeaning, setWordMeaning] = useState("");
+  const [unigramMap, setUnigramMap] = useState(null);
+  const [wordFrequencyMap, setWordFrequencyMap] = useState(null);
+  const [wordStats, setWordStats] = useState(null);
 
   const meaning = async (word) => {
     try {
@@ -88,10 +91,55 @@ function App() {
     return Array.from(result);
   };
 
+  const loadCsv = async () => {
+    try {
+      const res = await fetch("/wordsData/unigram_freq.csv");
+      const text = await res.text();
+      const lines = text.split("\n").slice(1);
+      const map = new Map();
+      for (let line of lines) {
+        const [word, count] = line.split(",");
+        if (word && count) {
+          map.set(word.trim(), Number(count));
+        }
+      }
+      return map;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const countWordFrequency = (text) => {
+    const words = extractWord(text);
+    const freqMap = new Map();
+
+    for (let word of words) {
+      freqMap.set(word, (freqMap.get(word) || 0) + 1);
+    }
+
+    return freqMap;
+  };
+
+  const handleWordClick = (word) => {
+    meaning(word);
+    const localCount = wordFrequencyMap?.get(word) || 0;
+    const globalCount = unigramMap?.get(word);
+
+    setWordStats({
+      localCount,
+      globalCount,
+    });
+
+    setWordMeaning(word);
+  };
+
   useEffect(() => {
     const fetchWords = async () => {
       const set = await loadCommonWords();
+      const unigram = await loadCsv();
       setCommonWords(set);
+      setUnigramMap(unigram);
+      console.log(unigram);
     };
 
     fetchWords();
@@ -115,7 +163,9 @@ function App() {
             className="btn btn-neutral join-item ml-4"
             onClick={() => {
               const words = findUncommonWords(inputText, commonWords);
+              const freqMap = countWordFrequency(inputText);
               setUncommonWords(words);
+              setWordFrequencyMap(freqMap);
             }}
           >
             Extract
@@ -130,8 +180,9 @@ function App() {
               <button
                 className="cursor-pointer"
                 onClick={() => {
-                  meaning(word);
-                  setWordMeaning(word);
+                  // meaning(word);
+                  // setWordMeaning(word);
+                  handleWordClick(word);
                 }}
               >
                 {word}
@@ -163,6 +214,7 @@ function App() {
                       setMeaningData([]);
                       setWordMeaning("");
                       setError("");
+                      setWordStats(null);
                     }}
                     aria-label="Close meaning"
                   >
@@ -171,6 +223,27 @@ function App() {
                 </div>
               )}
             </div>
+            {wordStats && (
+              <div className="mt-4 rounded-lg border border-gray-700 bg-gray-900/60 p-4 text-sm text-gray-300">
+                <p>
+                  Appears{" "}
+                  <span className="font-semibold text-indigo-400">
+                    {wordStats.localCount}
+                  </span>{" "}
+                  times in this paragraph
+                </p>
+
+                {wordStats.globalCount && (
+                  <p className="mt-1">
+                    Global usage:{" "}
+                    <span className="font-semibold">
+                      {wordStats.globalCount.toLocaleString()}
+                    </span>{" "}
+                    occurrences in English
+                  </p>
+                )}
+              </div>
+            )}
             {meaningData.map((meaning, meaningIndex) => (
               <div
                 key={meaningIndex}
@@ -207,6 +280,7 @@ function App() {
           </div>
         )}
       </div>
+
       <div>
         {error && (
           <div className="mt-8 rounded-xl border border-red-500/50 bg-red-900/20 p-5 text-center">
