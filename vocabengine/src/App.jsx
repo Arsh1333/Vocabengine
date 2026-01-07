@@ -13,6 +13,7 @@ function App() {
   const [unigramMap, setUnigramMap] = useState(null);
   const [wordFrequencyMap, setWordFrequencyMap] = useState(null);
   const [wordStats, setWordStats] = useState(null);
+  const [rarity, setRarity] = useState("");
 
   const meaning = async (word) => {
     try {
@@ -76,7 +77,7 @@ function App() {
 
   const findUncommonWords = (text, commonWordSet) => {
     if (!commonWordSet) {
-      console.log("common words set not found");
+      // console.log("common words set not found");
       return;
     }
     const words = extractWord(text);
@@ -120,10 +121,20 @@ function App() {
     return freqMap;
   };
 
+  function getRarity(globalCount) {
+    if (!globalCount) return "Extremely rare";
+    if (globalCount < 100_000) return "Rare";
+    if (globalCount < 1_000_000) return "Uncommon";
+    if (globalCount < 10_000_000) return "Common";
+    return "Very common";
+  }
+
   const handleWordClick = (word) => {
     meaning(word);
     const localCount = wordFrequencyMap?.get(word) || 0;
     const globalCount = unigramMap?.get(word);
+
+    setRarity(getRarity(globalCount));
 
     setWordStats({
       localCount,
@@ -205,7 +216,10 @@ function App() {
               {wordMeaning && (
                 <div className="mb-6 flex items-center justify-between rounded-xl border border-gray-700 bg-gray-900/70 px-5 py-4">
                   <h1 className="text-3xl font-semibold tracking-wide text-indigo-400">
-                    <span className="text-gray-500">Word:</span> {wordMeaning}
+                    <span className="text-gray-500">Word:</span> {wordMeaning}{" "}
+                    <span className="text-green-200 text-xs cursor-pointer">
+                      ({rarity})
+                    </span>
                   </h1>
 
                   <button
@@ -223,6 +237,7 @@ function App() {
                 </div>
               )}
             </div>
+
             {wordStats && (
               <div className="mt-4 rounded-lg border border-gray-700 bg-gray-900/60 p-4 text-sm text-gray-300">
                 <p>
@@ -244,6 +259,7 @@ function App() {
                 )}
               </div>
             )}
+
             {meaningData.map((meaning, meaningIndex) => (
               <div
                 key={meaningIndex}
