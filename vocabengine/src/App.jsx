@@ -159,48 +159,147 @@ function App() {
   return (
     <>
       <div>
-        <div className="join">
-          <div>
-            <label className="input validator join-item">
-              <input
-                type="text"
-                placeholder="Enter your text"
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-              />
-            </label>
+        <div
+          className="
+    group relative
+    flex flex-col sm:flex-row
+    items-stretch sm:items-center
+    gap-4 sm:gap-5
+    rounded-3xl
+    border border-gray-700/60
+    bg-gradient-to-r from-gray-900/90 via-gray-800/70 to-gray-900/90
+    p-4 sm:p-5
+    shadow-xl shadow-black/40
+    backdrop-blur-xl
+  "
+        >
+          {/* Soft hover glow */}
+          <div
+            className="
+      pointer-events-none absolute inset-0 rounded-3xl
+      bg-gradient-to-r from-indigo-400/10 to-indigo-600/10
+      opacity-0 group-hover:opacity-100
+      transition-opacity duration-700
+    "
+          />
+
+          {/* Input */}
+          <div className="relative flex-1">
+            <input
+              type="text"
+              placeholder="Paste or type your paragraph here…"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              className="
+        w-full rounded-2xl
+        bg-gray-800/60
+        border border-gray-700
+        px-5 py-4
+        text-sm sm:text-base
+        text-gray-100
+        placeholder-gray-400
+        backdrop-blur-md
+        outline-none
+        transition-all duration-300
+        focus:bg-gray-800/80
+        focus:border-indigo-400/50
+        focus:ring-4 focus:ring-indigo-500/25
+      "
+            />
           </div>
+
+          {/* Button */}
           <button
-            className="btn btn-neutral join-item ml-4"
             onClick={() => {
               const words = findUncommonWords(inputText, commonWords);
               const freqMap = countWordFrequency(inputText);
               setUncommonWords(words);
               setWordFrequencyMap(freqMap);
             }}
+            className="
+      relative overflow-hidden
+      rounded-2xl
+      bg-gradient-to-r from-indigo-500 to-indigo-600
+      px-6 py-4
+      text-sm font-semibold text-white
+      shadow-lg shadow-indigo-500/30
+      transition-all duration-300
+      hover:shadow-xl hover:shadow-indigo-500/40
+      hover:-translate-y-0.5
+      active:scale-[0.97]
+      w-full sm:w-auto
+      flex items-center justify-center
+    "
           >
-            Extract
+            <span className="relative z-10 flex items-center gap-2">
+              Extract
+              <svg
+                className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </span>
+
+            {/* Subtle shimmer */}
+            <span
+              className="
+        pointer-events-none absolute inset-0
+        bg-gradient-to-r from-white/10 to-transparent
+        opacity-0 hover:opacity-100
+        transition-opacity duration-500
+      "
+            />
           </button>
         </div>
-        <div className="mt-6">
+
+        <div className="mt-6 flex flex-wrap gap-3">
           {uncommonWords.map((word) => (
-            <span
+            <button
               key={word}
-              className="badge text-yellow-100 badge-outline mr-2 mb-2"
+              onClick={() => handleWordClick(word)}
+              className="
+        group relative
+        rounded-full
+        border border-gray-700
+        bg-gray-900/60
+        px-4 py-2
+        text-sm font-medium
+        text-indigo-300
+        backdrop-blur-md
+        transition-all duration-300
+        hover:border-indigo-400/60
+        hover:bg-gray-800/80
+        hover:text-indigo-200
+        hover:-translate-y-0.5
+        hover:shadow-lg hover:shadow-indigo-500/20
+        active:scale-95
+        focus:outline-none
+        focus:ring-2 focus:ring-indigo-500/40
+      "
             >
-              <button
-                className="cursor-pointer"
-                onClick={() => {
-                  // meaning(word);
-                  // setWordMeaning(word);
-                  handleWordClick(word);
-                }}
-              >
-                {word}
-              </button>
-            </span>
+              {/* Subtle glow */}
+              <span
+                className="
+          pointer-events-none absolute inset-0 rounded-full
+          bg-gradient-to-r from-indigo-500/10 to-transparent
+          opacity-0 group-hover:opacity-100
+          transition-opacity duration-300
+        "
+              />
+
+              <span className="relative z-10">{word}</span>
+            </button>
           ))}
         </div>
+
         {isLoading && (
           <div className="mt-8 flex justify-center">
             <div className="flex items-center gap-3 rounded-xl border border-gray-700 bg-gray-900/60 px-6 py-4">
