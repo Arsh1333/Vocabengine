@@ -145,6 +145,7 @@ function App() {
     });
 
     setWordMeaning(word);
+    setSaved(false);
   };
 
   const handleSaveWord = () => {
@@ -168,6 +169,14 @@ function App() {
     setSavedWords((prev) => [...prev, newWord]);
 
     setSaved(true);
+  };
+
+  const deleteSavedWord = (word) => {
+    setSavedWords((prev) => {
+      const updated = prev.filter((w) => w.word !== word);
+      localStorage.setItem("savedWords", JSON.stringify(updated));
+      return updated;
+    });
   };
 
   useEffect(() => {
@@ -437,11 +446,12 @@ function App() {
                   className="rounded-xl border border-gray-700 bg-gray-900/60 overflow-hidden"
                 >
                   {/* Header */}
-                  <button
-                    className="flex w-full items-center justify-between p-4 text-left"
-                    onClick={() => setOpenIndex(isOpen ? null : index)}
-                  >
-                    <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-between p-4">
+                    {/* Toggle button */}
+                    <button
+                      className="flex flex-1 items-center gap-3 text-left"
+                      onClick={() => setOpenIndex(isOpen ? null : index)}
+                    >
                       <h3 className="text-lg font-medium text-indigo-400">
                         {item.word}
                       </h3>
@@ -449,16 +459,32 @@ function App() {
                       <span className="rounded-full bg-green-400/10 px-2.5 py-0.5 text-xs text-green-300">
                         {item.rarity}
                       </span>
-                    </div>
+                    </button>
 
-                    <span
-                      className={`text-gray-400 transition-transform ${
-                        isOpen ? "rotate-180" : ""
-                      }`}
-                    >
-                      ▼
-                    </span>
-                  </button>
+                    {/* Actions */}
+                    <div className="flex items-center gap-3">
+                      {/* Delete */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteSavedWord(item.word);
+                        }}
+                        className="rounded-full bg-red-500/10 px-2.5 py-1 text-xs text-red-400 hover:bg-red-500 hover:text-white transition"
+                        aria-label="Delete saved word"
+                      >
+                        ✕
+                      </button>
+
+                      {/* Chevron */}
+                      <span
+                        className={`text-gray-400 transition-transform ${
+                          isOpen ? "rotate-180" : ""
+                        }`}
+                      >
+                        ▼
+                      </span>
+                    </div>
+                  </div>
 
                   {/* Content */}
                   <div
