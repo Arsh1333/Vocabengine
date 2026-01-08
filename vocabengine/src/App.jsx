@@ -14,6 +14,9 @@ function App() {
   const [wordFrequencyMap, setWordFrequencyMap] = useState(null);
   const [wordStats, setWordStats] = useState(null);
   const [rarity, setRarity] = useState("");
+  const [saved, setSaved] = useState(false);
+  const [savedWords, setSavedWords] = useState([]);
+  const [openIndex, setOpenIndex] = useState(false);
 
   const meaning = async (word) => {
     try {
@@ -144,43 +147,52 @@ function App() {
     setWordMeaning(word);
   };
 
+  const handleSaveWord = () => {
+    const existing = JSON.parse(localStorage.getItem("savedWords")) || [];
+
+    const alreadySaved = existing.some((item) => item.word === wordMeaning);
+
+    if (alreadySaved) return;
+
+    const newWord = {
+      word: wordMeaning,
+      rarity,
+      meanings: meaningData.map((item) => ({
+        partOfSpeech: item.partOfSpeech,
+        definitions: item.definitions.map((d) => d.definition),
+      })),
+      savedAt: Date.now(),
+    };
+
+    localStorage.setItem("savedWords", JSON.stringify([...existing, newWord]));
+    setSavedWords((prev) => [...prev, newWord]);
+
+    setSaved(true);
+  };
+
   useEffect(() => {
     const fetchWords = async () => {
       const set = await loadCommonWords();
       const unigram = await loadCsv();
       setCommonWords(set);
       setUnigramMap(unigram);
-      console.log(unigram);
+      // console.log(unigram);
     };
-
+    const stored = JSON.parse(localStorage.getItem("savedWords")) || [];
+    setSavedWords(stored);
     fetchWords();
   }, []);
 
   return (
     <>
       <div>
-        <div
-          className="
-    group relative
-    flex flex-col sm:flex-row
-    items-stretch sm:items-center
-    gap-4 sm:gap-5
-    rounded-3xl
-    border border-gray-700/60
-    bg-gradient-to-r from-gray-900/90 via-gray-800/70 to-gray-900/90
-    p-4 sm:p-5
-    shadow-xl shadow-black/40
-    backdrop-blur-xl
-  "
-        >
+        <div className="group relative flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-5 rounded-3xl border border-gray-700/60  bg-gradient-to-r from-gray-900/90 via-gray-800/70 to-gray-900/90 p-4 sm:p-5 shadow-xl shadow-black/40 backdrop-blur-xl ">
           {/* Soft hover glow */}
           <div
-            className="
-      pointer-events-none absolute inset-0 rounded-3xl
+            className="  pointer-events-none absolute inset-0 rounded-3xl
       bg-gradient-to-r from-indigo-400/10 to-indigo-600/10
       opacity-0 group-hover:opacity-100
-      transition-opacity duration-700
-    "
+      transition-opacity duration-700 "
           />
 
           {/* Input */}
@@ -322,6 +334,16 @@ function App() {
                     <span className="flex items-center gap-1 rounded-full bg-green-400/10 px-2.5 py-0.5 text-xs text-green-300">
                       {rarity}
                     </span>
+                    <button
+                      className={`px-2 py-1 rounded text-sm ${
+                        saved ? "bg-green-600" : "bg-blue-700"
+                      }`}
+                      onClick={() => {
+                        handleSaveWord();
+                      }}
+                    >
+                      {saved ? "Saved ✓" : "Save"}
+                    </button>
                   </div>
 
                   <button
@@ -398,6 +420,64 @@ function App() {
           </div>
         )}
       </div>
+
+      {savedWords.length > 0 && (
+        <div className="mt-10">
+          <h2 className="mb-4 text-xl font-semibold text-gray-200">
+            Saved Words
+          </h2>
+
+          <div className="space-y-3">
+            {savedWords.map((item, index) => {
+              const isOpen = openIndex === index;
+
+              return (
+                <div
+                  key={item.word}
+                  className="rounded-xl border border-gray-700 bg-gray-900/60 overflow-hidden"
+                >
+                  {/* Header */}
+                  <button
+                    className="flex w-full items-center justify-between p-4 text-left"
+                    onClick={() => setOpenIndex(isOpen ? null : index)}
+                  >
+                    <div className="flex items-center gap-3">
+                      <h3 className="text-lg font-medium text-indigo-400">
+                        {item.word}
+                      </h3>
+
+                      <span className="rounded-full bg-green-400/10 px-2.5 py-0.5 text-xs text-green-300">
+                        {item.rarity}
+                      </span>
+                    </div>
+
+                    <span
+                      className={`text-gray-400 transition-transform ${
+                        isOpen ? "rotate-180" : ""
+                      }`}
+                    >
+                      ▼
+                    </span>
+                  </button>
+
+                  {/* Content */}
+                  <div
+                    className={`grid transition-all duration-300 ease-in-out ${
+                      isOpen
+                        ? "grid-rows-[1fr] opacity-100"
+                        : "grid-rows-[0fr] opacity-0"
+                    }`}
+                  >
+                    <div className="overflow-hidden px-4 pb-4 text-sm text-gray-400">
+                      {item.meanings?.[0]?.definitions?.[0]}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       <div>
         {error && (
