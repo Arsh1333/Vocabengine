@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import Navbar from "./components/Navbar";
+import About from "./components/About";
+import ErrorMessage from "./components/ErrorMessage";
 
 function App() {
   const [commonWords, setCommonWords] = useState(null);
   const [inputText, setInputText] = useState("");
   const [uncommonWords, setUncommonWords] = useState([]);
-  // const [meaningOfWord, setMeaningOfWord] = useState(false);
   const [meaningData, setMeaningData] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -33,11 +35,14 @@ function App() {
       setMeaningData(data[0].meanings);
     } catch (error) {
       setMeaningData([]);
-      setError(error);
-      console.log(
-        "Error while getting meaning from meaning from dictionary api",
-        error
+      setError(
+        error.message ||
+          "Error while getting meaning from meaning from dictionary api"
       );
+      // console.log(
+      //   "Error while getting meaning from meaning from dictionary api",
+      //   error
+      // );
     } finally {
       setIsLoading(false);
     }
@@ -195,7 +200,8 @@ function App() {
   return (
     <>
       <div>
-        <div className="group relative flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-5 rounded-3xl border border-gray-700/60  bg-gradient-to-r from-gray-900/90 via-gray-800/70 to-gray-900/90 p-4 sm:p-5 shadow-xl shadow-black/40 backdrop-blur-xl ">
+        <Navbar></Navbar>
+        <div className="mt-2 group relative flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-5 rounded-3xl border border-gray-700/60  bg-gradient-to-r from-gray-900/90 via-gray-800/70 to-gray-900/90 p-4 sm:p-5 shadow-xl shadow-black/40 backdrop-blur-xl ">
           {/* Soft hover glow */}
           <div
             className="  pointer-events-none absolute inset-0 rounded-3xl
@@ -205,7 +211,7 @@ function App() {
           />
 
           {/* Input */}
-          <div className="relative flex-1">
+          <div id="analyze" className="relative flex-1">
             <input
               type="text"
               placeholder="Paste or type your paragraph here…"
@@ -431,7 +437,7 @@ function App() {
       </div>
 
       {savedWords.length > 0 && (
-        <div className="mt-10">
+        <div id="saved" className="mt-10">
           <h2 className="mb-4 text-xl font-semibold text-gray-200">
             Saved Words
           </h2>
@@ -504,16 +510,10 @@ function App() {
           </div>
         </div>
       )}
-
-      <div>
-        {error && (
-          <div className="mt-8 rounded-xl border border-red-500/50 bg-red-900/20 p-5 text-center">
-            <p className="text-red-400 font-medium">
-              No definitions found. Please try another word!
-            </p>
-          </div>
-        )}
-      </div>
+      <ErrorMessage message={error} />
+      <br />
+      <br />
+      <About />
     </>
   );
 }
