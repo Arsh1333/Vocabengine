@@ -326,7 +326,6 @@ function App() {
             </button>
           ))}
         </div>
-        <Hero></Hero>
 
         <Loader isLoading={isLoading}></Loader>
 
@@ -413,6 +412,8 @@ function App() {
         savedWords={savedWords}
         deleteSavedWord={deleteSavedWord}
       />
+      <Hero></Hero>
+
       <ErrorMessage message={error} />
       <br />
       <br />
