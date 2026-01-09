@@ -15,7 +15,7 @@ const Navbar = () => {
         {/* Logo */}
         <button
           onClick={() => scrollTo("analyze")}
-          className="text-lg font-semibold tracking-tight text-indigo-400 hover:text-indigo-300 transition"
+          className="text-lg italic font-semibold tracking-tight text-indigo-400 hover:text-indigo-300 transition"
         >
           VE
         </button>

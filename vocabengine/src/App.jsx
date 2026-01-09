@@ -6,6 +6,7 @@ import ErrorMessage from "./components/ErrorMessage";
 import SavedWordsList from "./components/SavedWordList";
 import Loader from "./components/Loader";
 import WordStats from "./components/WordStats";
+import Hero from "./components/Hero";
 
 function App() {
   const [commonWords, setCommonWords] = useState(null);
@@ -325,6 +326,7 @@ function App() {
             </button>
           ))}
         </div>
+        <Hero></Hero>
 
         <Loader isLoading={isLoading}></Loader>
 
