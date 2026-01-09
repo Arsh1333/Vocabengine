@@ -3,6 +3,9 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import About from "./components/About";
 import ErrorMessage from "./components/ErrorMessage";
+import SavedWordsList from "./components/SavedWordList";
+import Loader from "./components/Loader";
+import WordStats from "./components/WordStats";
 
 function App() {
   const [commonWords, setCommonWords] = useState(null);
@@ -18,7 +21,7 @@ function App() {
   const [rarity, setRarity] = useState("");
   const [saved, setSaved] = useState(false);
   const [savedWords, setSavedWords] = useState([]);
-  const [openIndex, setOpenIndex] = useState(false);
+  // const [openIndex, setOpenIndex] = useState(false);
 
   const meaning = async (word) => {
     try {
@@ -39,10 +42,6 @@ function App() {
         error.message ||
           "Error while getting meaning from meaning from dictionary api"
       );
-      // console.log(
-      //   "Error while getting meaning from meaning from dictionary api",
-      //   error
-      // );
     } finally {
       setIsLoading(false);
     }
@@ -327,14 +326,7 @@ function App() {
           ))}
         </div>
 
-        {isLoading && (
-          <div className="mt-8 flex justify-center">
-            <div className="flex items-center gap-3 rounded-xl border border-gray-700 bg-gray-900/60 px-6 py-4">
-              <span className="h-5 w-5 animate-spin rounded-full border-2 border-indigo-400 border-t-transparent"></span>
-              <span className="text-sm text-gray-300">Fetching meaning...</span>
-            </div>
-          </div>
-        )}
+        <Loader isLoading={isLoading}></Loader>
 
         {meaningData && (
           <div className="mt-8 space-y-6">
@@ -377,27 +369,7 @@ function App() {
               )}
             </div>
 
-            {wordStats && (
-              <div className="mt-4 rounded-lg border border-gray-700 bg-gray-900/60 p-4 text-sm text-gray-300">
-                <p>
-                  Appears{" "}
-                  <span className="font-semibold text-indigo-400">
-                    {wordStats.localCount}
-                  </span>{" "}
-                  times in this paragraph
-                </p>
-
-                {wordStats.globalCount && (
-                  <p className="mt-1">
-                    Global usage:{" "}
-                    <span className="font-semibold">
-                      {wordStats.globalCount.toLocaleString()}
-                    </span>{" "}
-                    occurrences in English
-                  </p>
-                )}
-              </div>
-            )}
+            {wordStats && <WordStats wordStats={wordStats} />}
 
             {meaningData.map((meaning, meaningIndex) => (
               <div
@@ -435,81 +407,10 @@ function App() {
           </div>
         )}
       </div>
-
-      {savedWords.length > 0 && (
-        <div id="saved" className="mt-10">
-          <h2 className="mb-4 text-xl font-semibold text-gray-200">
-            Saved Words
-          </h2>
-
-          <div className="space-y-3">
-            {savedWords.map((item, index) => {
-              const isOpen = openIndex === index;
-
-              return (
-                <div
-                  key={item.word}
-                  className="rounded-xl border border-gray-700 bg-gray-900/60 overflow-hidden"
-                >
-                  {/* Header */}
-                  <div className="flex items-center justify-between p-4">
-                    {/* Toggle button */}
-                    <button
-                      className="flex flex-1 items-center gap-3 text-left"
-                      onClick={() => setOpenIndex(isOpen ? null : index)}
-                    >
-                      <h3 className="text-lg font-medium text-indigo-400">
-                        {item.word}
-                      </h3>
-
-                      <span className="rounded-full bg-green-400/10 px-2.5 py-0.5 text-xs text-green-300">
-                        {item.rarity}
-                      </span>
-                    </button>
-
-                    {/* Actions */}
-                    <div className="flex items-center gap-3">
-                      {/* Delete */}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          deleteSavedWord(item.word);
-                        }}
-                        className="rounded-full bg-red-500/10 px-2.5 py-1 text-xs text-red-400 hover:bg-red-500 hover:text-white transition"
-                        aria-label="Delete saved word"
-                      >
-                        ✕
-                      </button>
-
-                      {/* Chevron */}
-                      <span
-                        className={`text-gray-400 transition-transform ${
-                          isOpen ? "rotate-180" : ""
-                        }`}
-                      >
-                        ▼
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div
-                    className={`grid transition-all duration-300 ease-in-out ${
-                      isOpen
-                        ? "grid-rows-[1fr] opacity-100"
-                        : "grid-rows-[0fr] opacity-0"
-                    }`}
-                  >
-                    <div className="overflow-hidden px-4 pb-4 text-sm text-gray-400">
-                      {item.meanings?.[0]?.definitions?.[0]}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      <SavedWordsList
+        savedWords={savedWords}
+        deleteSavedWord={deleteSavedWord}
+      />
       <ErrorMessage message={error} />
       <br />
       <br />
