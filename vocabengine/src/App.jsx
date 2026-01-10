@@ -201,7 +201,7 @@ function App() {
     <>
       <div>
         <Navbar></Navbar>
-        <div className="mt-2 group relative flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-5 rounded-3xl border border-gray-700/60  bg-gradient-to-r from-gray-900/90 via-gray-800/70 to-gray-900/90 p-4 sm:p-5 shadow-xl shadow-black/40 backdrop-blur-xl ">
+        <div className="mt-9 group relative flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-5 rounded-3xl border border-gray-700/60  bg-gradient-to-r from-gray-900/90 via-gray-800/70 to-gray-900/90 p-4 sm:p-5 shadow-xl shadow-black/40 backdrop-blur-xl ">
           {/* Soft hover glow */}
           <div
             className="  pointer-events-none absolute inset-0 rounded-3xl
@@ -329,6 +329,8 @@ function App() {
 
         <Loader isLoading={isLoading}></Loader>
 
+        <ErrorMessage message={error} />
+
         {meaningData && (
           <div className="mt-8 space-y-6">
             <div>
@@ -408,13 +410,16 @@ function App() {
           </div>
         )}
       </div>
+
+      <Hero></Hero>
+      <h2 className="mb-4 text-xl font-semibold text-gray-200">
+        Saved Words List
+      </h2>
       <SavedWordsList
+        id="saved"
         savedWords={savedWords}
         deleteSavedWord={deleteSavedWord}
       />
-      <Hero></Hero>
-
-      <ErrorMessage message={error} />
       <br />
       <br />
       <About />
