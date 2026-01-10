@@ -2,13 +2,13 @@ export default function About() {
   return (
     <section
       id="about"
-      className="scroll-mt-24 mx-auto max-w-3xl rounded-2xl border border-gray-700 bg-gray-900/60 p-6 sm:p-8"
+      className="scroll font-mont-mt-24 mx-auto max-w-3xl rounded-2xl border border-gray-700 bg-gray-900/60 p-6 sm:p-8"
     >
-      <h2 className="mb-3 text-2xl font-semibold tracking-tight text-gray-100">
+      <h2 className="mb-3 font-mont text-2xl font-semibold tracking-tight text-gray-100">
         About the app
       </h2>
 
-      <p className="text-sm leading-relaxed text-gray-400 sm:text-base">
+      <p className="text-sm font-mont leading-relaxed text-gray-400 sm:text-base">
         This app helps you build vocabulary the same way you naturally read.
         Instead of memorizing word lists, you paste real English content and
         interact with unfamiliar words directly in context.

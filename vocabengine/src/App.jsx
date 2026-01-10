@@ -199,7 +199,7 @@ function App() {
 
   return (
     <>
-      <div>
+      <div className="font-mont">
         <Navbar></Navbar>
         <div className="mt-9 group relative flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-5 rounded-3xl border border-gray-700/60  bg-gradient-to-r from-gray-900/90 via-gray-800/70 to-gray-900/90 p-4 sm:p-5 shadow-xl shadow-black/40 backdrop-blur-xl ">
           {/* Soft hover glow */}
@@ -412,7 +412,7 @@ function App() {
       </div>
 
       <Hero></Hero>
-      <h2 className="mb-4 text-xl font-semibold text-gray-200">
+      <h2 className="mb-4 text-xl font-semibold font-mont text-gray-200">
         Saved Words List
       </h2>
       <SavedWordsList

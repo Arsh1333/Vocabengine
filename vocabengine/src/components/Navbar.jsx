@@ -10,15 +10,17 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-2 z-50 mx-auto max-w-6xl px-3 sm:px-4">
+    <nav className="sticky top-2 z-50 mx-auto max-w-6xl px-3 sm:px-4 font-mont">
       <div
         className="
-          flex items-center justify-between
+          flex flex-col sm:flex-row
+          items-center sm:justify-between
+          gap-3 sm:gap-0
           rounded-2xl sm:rounded-3xl
           border border-white/10
           bg-black/60 backdrop-blur-md
           px-3 sm:px-6
-          py-2 sm:py-3
+          py-3
           shadow-lg
         "
       >
@@ -31,7 +33,7 @@ const Navbar = () => {
             src="logoMain.png"
             alt="Vocab Engine"
             className="
-              h-[100px] sm:h-[100px] md:h-12 lg:h-14
+              h-9 sm:h-10 md:h-12 lg:h-14
               w-auto
               transition-transform duration-200
               group-hover:scale-105
@@ -40,7 +42,15 @@ const Navbar = () => {
         </button>
 
         {/* Nav Links */}
-        <div className="flex items-center gap-1 sm:gap-2 rounded-full bg-white/5 p-1">
+        <div
+          className="
+            flex items-center
+            gap-1 sm:gap-2
+            rounded-full
+            bg-white/5
+            p-1
+          "
+        >
           {[
             { label: "Analyze", id: "analyze" },
             { label: "Saved", id: "saved" },

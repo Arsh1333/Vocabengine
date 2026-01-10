@@ -1,12 +1,10 @@
 export default function Hero() {
   return (
-    <section className="mx-auto max-w-4xl px-4 pt-16 pb-12 text-center">
-    
+    <section className="mx-auto max-w-4xl px-4 pt-16 pb-12 text-center font-mont">
       <h1 className="text-3xl font-bold tracking-tight text-gray-100 sm:text-4xl">
         Build vocabulary the way you actually read.
       </h1>
 
-  
       <p className="mt-4 text-base text-gray-400 sm:text-lg">
         Paste any text. Click on words you don’t know.{" "}
         <br className="hidden sm:block" />
