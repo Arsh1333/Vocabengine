@@ -7,6 +7,7 @@ import SavedWordsList from "./components/SavedWordList";
 import Loader from "./components/Loader";
 import WordStats from "./components/WordStats";
 import Hero from "./components/Hero";
+import Resources from "./components/Resources";
 
 function App() {
   const [commonWords, setCommonWords] = useState(null);
@@ -412,15 +413,25 @@ function App() {
       </div>
 
       <Hero></Hero>
+      <br />
+      <hr />
+      <br />
+      <Resources></Resources>
+      <br />
+      <hr />
+      <br />
+      <br />
       <h2 className="mb-4 text-xl font-semibold font-mont text-gray-200">
         Saved Words List
       </h2>
+      <br />
       <SavedWordsList
         id="saved"
         savedWords={savedWords}
         deleteSavedWord={deleteSavedWord}
       />
       <br />
+      <hr />
       <br />
       <About />
     </>
