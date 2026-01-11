@@ -50,7 +50,7 @@ export default function Resources() {
   ];
 
   return (
-    <section id="resources" className="scroll-mt-24 font-mont mt-14">
+    <section id="resrc" className="scroll-mt-24 font-mont mt-14">
       <h2 className="text-xl font-mont text-gray-200 mb-2">
         Practice Resources
       </h2>

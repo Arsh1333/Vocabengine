@@ -55,6 +55,7 @@ const Navbar = () => {
             { label: "Analyze", id: "analyze" },
             { label: "Saved", id: "saved" },
             { label: "About", id: "about" },
+            { label: "Resource", id: "resrc" },
           ].map((item) => (
             <button
               key={item.id}

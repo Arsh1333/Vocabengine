@@ -412,11 +412,14 @@ function App() {
         )}
       </div>
 
+      <br />
+      <hr />
+
       <Hero></Hero>
       <br />
       <hr />
       <br />
-      <Resources></Resources>
+      <Resources id="resrc"></Resources>
       <br />
       <hr />
       <br />
