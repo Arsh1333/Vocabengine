@@ -23,6 +23,7 @@ function App() {
   const [rarity, setRarity] = useState("");
   const [saved, setSaved] = useState(false);
   const [savedWords, setSavedWords] = useState([]);
+  const [errorForSimpleWords, setErrorForSimpleWords] = useState("");
   // const [openIndex, setOpenIndex] = useState(false);
 
   const meaning = async (word) => {
@@ -97,7 +98,11 @@ function App() {
         result.add(i);
       }
     }
-
+    if (Array.from(result).length === 0) {
+      setErrorForSimpleWords(
+        "Not found any rare word in input text ,try complex text"
+      );
+    }
     return Array.from(result);
   };
 
@@ -373,7 +378,9 @@ function App() {
                 </div>
               )}
             </div>
-
+            {errorForSimpleWords && (
+              <div className="text-red-500">{errorForSimpleWords}</div>
+            )}
             {wordStats && <WordStats wordStats={wordStats} />}
 
             {meaningData.map((meaning, meaningIndex) => (
