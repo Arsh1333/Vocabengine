@@ -427,7 +427,7 @@ function App() {
       <h2 className="mb-4 text-xl font-semibold font-mont text-gray-200">
         Saved Words List
       </h2>
-      <br />
+
       <SavedWordsList
         id="saved"
         savedWords={savedWords}
