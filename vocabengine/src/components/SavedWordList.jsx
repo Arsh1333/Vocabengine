@@ -5,7 +5,7 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
 
   return (
     <div id="saved" className="mt-10">
-      <h2 className="mb-4 text-xl font-semibold text-gray-200">Saved Words</h2>
+      <h2 className="mb-4 text-xl font-mont text-gray-200">Saved Words</h2>
 
       {savedWords.length === 0 ? (
         /* Empty state */
