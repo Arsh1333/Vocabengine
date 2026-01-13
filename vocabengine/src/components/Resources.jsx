@@ -55,6 +55,7 @@ export default function Resources() {
         Practice Resources
       </h2>
 
+      <br />
       <p className="mb-6 text-sm text-gray-400">
         Not sure what text to analyze? Use real reading material from trusted
         sources. Copy any paragraph and paste it into the engine to discover new

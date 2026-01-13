@@ -102,6 +102,8 @@ function App() {
       setErrorForSimpleWords(
         "Not found any rare word in input text ,try complex text"
       );
+    } else {
+      setErrorForSimpleWords("");
     }
     return Array.from(result);
   };
@@ -429,7 +431,7 @@ function App() {
       <br />
       <br />
       <h2 className="mb-4 text-xl font-semibold font-mont text-gray-200">
-        Saved Words List
+        Your words collection
       </h2>
       <SavedWordsList
         id="saved"

@@ -1,11 +1,46 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 export default function SavedWordsList({ savedWords, deleteSavedWord }) {
   const [openIndex, setOpenIndex] = useState(null);
 
+  const stats = useMemo(() => {
+    const counts = { Rare: 0, Uncommon: 0, Common: 0 };
+
+    savedWords.forEach((word) => {
+      if (counts[word.rarity] !== undefined) {
+        counts[word.rarity]++;
+      }
+    });
+
+    return {
+      total: savedWords.length,
+      ...counts,
+    };
+  }, [savedWords]);
+
   return (
     <div id="saved" className="mt-10">
-      <h2 className="mb-4 text-xl font-mont text-gray-200">Saved Words</h2>
+      <h2 className="mb-4 text-xl font-mont text-gray-200">Words collection</h2>
+
+      <div className="rounded-xl border border-gray-700 bg-gray-900/50 p-5">
+        <p className="text-sm text-gray-400">You’ve collected</p>
+
+        <div className="mt-1 text-3xl font-semibold text-gray-100">
+          {stats.total} words
+        </div>
+
+        <div className="mt-4 flex flex-wrap gap-3 text-sm">
+          <span className="rounded-full bg-purple-400/10 px-3 py-1 text-purple-300">
+            Rare: {stats.Rare}
+          </span>
+          <span className="rounded-full bg-blue-400/10 px-3 py-1 text-blue-300">
+            Uncommon: {stats.Uncommon}
+          </span>
+          <span className="rounded-full bg-green-400/10 px-3 py-1 text-green-300">
+            Common: {stats.Common}
+          </span>
+        </div>
+      </div>
 
       {savedWords.length === 0 ? (
         /* Empty state */
