@@ -1,22 +1,51 @@
 import { useState, useMemo } from "react";
 
+const XP_PER_WORD = {
+  Rare: 5,
+  Uncommon: 3,
+  Common: 1,
+};
+
+const LEVELS = [
+  { minXP: 0, title: "Word Seeker" },
+  { minXP: 25, title: "Lexical Explorer" },
+  { minXP: 75, title: "Vocabulary Curator" },
+  { minXP: 150, title: "Language Analyst" },
+  { minXP: 300, title: "Wordsmith" },
+  { minXP: 500, title: "Lexicon Virtuoso" },
+];
+
 export default function SavedWordsList({ savedWords, deleteSavedWord }) {
   const [openIndex, setOpenIndex] = useState(null);
 
+  /* Stats + XP calculation */
   const stats = useMemo(() => {
     const counts = { Rare: 0, Uncommon: 0, Common: 0 };
+    let xp = 0;
 
     savedWords.forEach((word) => {
       if (counts[word.rarity] !== undefined) {
         counts[word.rarity]++;
+        xp += XP_PER_WORD[word.rarity] || 0;
       }
     });
 
     return {
       total: savedWords.length,
+      xp,
       ...counts,
     };
   }, [savedWords]);
+
+  /* Determine current level */
+  const level = useMemo(() => {
+    return [...LEVELS].reverse().find((lvl) => stats.xp >= lvl.minXP);
+  }, [stats.xp]);
+
+  /* Next level (for motivation) */
+  const nextLevel = useMemo(() => {
+    return LEVELS.find((lvl) => lvl.minXP > stats.xp);
+  }, [stats.xp]);
 
   return (
     <div id="saved" className="mt-10">
@@ -27,6 +56,14 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
 
         <div className="mt-1 text-3xl font-semibold text-gray-100">
           {stats.total} words
+        </div>
+
+        <div className="mt-1 text-blue-400 font-medium">{level?.title}</div>
+
+        <div className="text-xs text-gray-500">
+          {stats.xp} XP
+          {nextLevel &&
+            ` • ${nextLevel.minXP - stats.xp} XP to ${nextLevel.title}`}
         </div>
 
         <div className="mt-4 flex flex-wrap gap-3 text-sm">
@@ -43,7 +80,6 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
       </div>
 
       {savedWords.length === 0 ? (
-        /* Empty state */
         <div className="rounded-xl border border-dashed border-gray-700 bg-gray-900/40 p-6 text-center">
           <p className="text-sm text-gray-400">No saved words yet.</p>
           <p className="mt-1 text-xs text-gray-500">
@@ -51,7 +87,6 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
           </p>
         </div>
       ) : (
-        /* List */
         <div className="space-y-3">
           {savedWords.map((item, index) => {
             const isOpen = openIndex === index;
@@ -59,11 +94,9 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
             return (
               <div
                 key={item.word}
-                className="rounded-xl border border-gray-700 bg-gray-900/60 overflow-hidden"
+                className="overflow-hidden rounded-xl border border-gray-700 bg-gray-900/60"
               >
-                {/* Header */}
                 <div className="flex items-center justify-between p-4">
-                  {/* Toggle */}
                   <button
                     className="flex flex-1 items-center gap-3 text-left"
                     onClick={() => setOpenIndex(isOpen ? null : index)}
@@ -77,7 +110,6 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
                     </span>
                   </button>
 
-                  {/* Actions */}
                   <div className="flex items-center gap-3">
                     <button
                       onClick={(e) => {
@@ -85,7 +117,6 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
                         deleteSavedWord(item.word);
                       }}
                       className="rounded-full bg-red-500/10 px-2.5 py-1 text-xs text-red-400 hover:bg-red-500 hover:text-white transition"
-                      aria-label="Delete saved word"
                     >
                       ✕
                     </button>
@@ -100,9 +131,8 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
                   </div>
                 </div>
 
-                {/* Content */}
                 <div
-                  className={`grid transition-all duration-300 ease-in-out ${
+                  className={`grid transition-all duration-300 ${
                     isOpen
                       ? "grid-rows-[1fr] opacity-100"
                       : "grid-rows-[0fr] opacity-0"

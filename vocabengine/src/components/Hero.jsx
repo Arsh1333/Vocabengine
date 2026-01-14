@@ -8,7 +8,7 @@ export default function Hero() {
       <p className="mt-4 text-base text-gray-400 sm:text-lg">
         Paste any text. Click on words you don’t know.{" "}
         <br className="hidden sm:block" />
-        Understand them in context, save them, and remember them.
+        Understand them , save them, and remember them.
       </p>
 
       <div className="mt-10 grid gap-6 sm:grid-cols-3 text-left">
