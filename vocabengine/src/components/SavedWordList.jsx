@@ -18,6 +18,8 @@ const LEVELS = [
 export default function SavedWordsList({ savedWords, deleteSavedWord }) {
   const [openIndex, setOpenIndex] = useState(null);
 
+  const APP_URL = `https://vocabengine-7pkj.vercel.app/`;
+
   /* Stats + XP calculation */
   const stats = useMemo(() => {
     const counts = { Rare: 0, Uncommon: 0, Common: 0 };
@@ -47,6 +49,21 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
     return LEVELS.find((lvl) => lvl.minXP > stats.xp);
   }, [stats.xp]);
 
+  const shareText = useMemo(() => {
+    return (
+      `I’ve collected ${stats.total} words and reached "${level?.title}" 🧠✨\n` +
+      `Building my vocabulary one word at a time.\n\n` +
+      `${APP_URL}`
+    );
+  }, [stats.total, level]);
+
+  const shareOnTwitter = () => {
+    const intentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      shareText
+    )}`;
+    window.open(intentUrl, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <div id="saved" className="mt-10">
       <h2 className="mb-4 text-xl font-mont text-gray-200">Words collection</h2>
@@ -65,6 +82,13 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
           {nextLevel &&
             ` • ${nextLevel.minXP - stats.xp} XP to ${nextLevel.title}`}
         </div>
+
+        <button
+          onClick={shareOnTwitter}
+          className="mt-4 inline-flex items-center gap-2 rounded-lg border border-gray-600 bg-gray-900 px-4 py-2 text-sm text-gray-200 hover:bg-gray-800 transition"
+        >
+          Share progress on X
+        </button>
 
         <div className="mt-4 flex flex-wrap gap-3 text-sm">
           <span className="rounded-full bg-purple-400/10 px-3 py-1 text-purple-300">
