@@ -8,6 +8,7 @@ import Loader from "./components/Loader";
 import WordStats from "./components/WordStats";
 import Hero from "./components/Hero";
 import Resources from "./components/Resources";
+import WordOfTheDay from "./components/WordOfTheDay";
 
 function App() {
   const [commonWords, setCommonWords] = useState(null);
@@ -209,6 +210,8 @@ function App() {
     <>
       <div className="font-mont">
         <Navbar></Navbar>
+        <WordOfTheDay />
+        <br />
         <Hero></Hero>
         <div className="mt-9 group relative flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-5 rounded-3xl border border-gray-700/60  bg-gradient-to-r from-gray-900/90 via-gray-800/70 to-gray-900/90 p-4 sm:p-5 shadow-xl shadow-black/40 backdrop-blur-xl ">
           {/* Soft hover glow */}
