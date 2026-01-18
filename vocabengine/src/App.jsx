@@ -9,6 +9,7 @@ import WordStats from "./components/WordStats";
 import Hero from "./components/Hero";
 import Resources from "./components/Resources";
 import WordOfTheDay from "./components/WordOfTheDay";
+import Footer from "./components/Footer";
 
 function App() {
   const [commonWords, setCommonWords] = useState(null);
@@ -446,6 +447,7 @@ function App() {
       <hr />
       <br />
       <About />
+      <Footer></Footer>
     </>
   );
 }
