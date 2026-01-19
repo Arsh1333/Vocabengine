@@ -24,14 +24,6 @@ export default function Footer() {
               Keep your learning momentum! Open the app daily and grow your
               streak.
             </p>
-            <div className="flex items-center space-x-2 text-xs bg-neutral-800/50 px-3 py-1.5 rounded-full">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              <span>Current streak: 0 days</span>
-            </div>
-            <div className="flex items-center space-x-2 text-xs bg-neutral-800/50 px-3 py-1.5 rounded-full">
-              <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
-              <span>Best streak: 0 days</span>
-            </div>
           </div>
 
           {/* Quick Links */}
@@ -40,14 +32,6 @@ export default function Footer() {
               Quick Links
             </h4>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-              <a
-                href="#"
-                className="group relative p-3 rounded-xl bg-neutral-900/50 hover:bg-neutral-800/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/10"
-              >
-                <span className="text-neutral-400 group-hover:text-neutral-100 transition-colors">
-                  Docs
-                </span>
-              </a>
               <a
                 href="https://github.com/Arsh1333/Vocabengine"
                 target="_blank"
@@ -66,14 +50,6 @@ export default function Footer() {
               >
                 <span className="text-neutral-400 group-hover:text-neutral-100 transition-colors">
                   X
-                </span>
-              </a>
-              <a
-                href="#"
-                className="group relative p-3 rounded-xl bg-neutral-900/50 hover:bg-neutral-800/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/10"
-              >
-                <span className="text-neutral-400 group-hover:text-neutral-100 transition-colors">
-                  Privacy
                 </span>
               </a>
             </div>

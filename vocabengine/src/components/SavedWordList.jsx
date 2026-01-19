@@ -1,4 +1,6 @@
 import { useState, useMemo } from "react";
+import { getStreaks } from "../utils/streaks";
+
 
 const XP_PER_WORD = {
   Rare: 5,
@@ -59,10 +61,14 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
 
   const shareOnTwitter = () => {
     const intentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-      shareText
+      shareText,
     )}`;
     window.open(intentUrl, "_blank", "noopener,noreferrer");
   };
+
+  const streaks = useMemo(() => {
+    return getStreaks(savedWords);
+  }, [savedWords]);
 
   return (
     <div id="saved" className="mt-10">
@@ -171,6 +177,14 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
           })}
         </div>
       )}
+      <div className="mt-3 flex gap-3 text-sm">
+        <span className="rounded-full bg-orange-400/10 px-3 py-1 text-orange-300">
+          {streaks.current} day streak
+        </span>
+        <span className="rounded-full bg-yellow-400/10 px-3 py-1 text-yellow-300">
+          Best: {streaks.best}
+        </span>
+      </div>
     </div>
   );
 }
