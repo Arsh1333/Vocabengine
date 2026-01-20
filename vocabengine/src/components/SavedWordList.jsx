@@ -75,14 +75,21 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
     return getStreaks(savedWords);
   }, [savedWords]);
 
+  const REVISION_COUNT = 3;
   const startRevision = () => {
-    if (savedWords.length === 0) {
-      // console.log("Save more words");
-      setMessageForRevision("Save more words , words not found");
+    if (savedWords.length < REVISION_COUNT) {
+      setMessageForRevision(
+        `Save at least ${REVISION_COUNT} words to start revision`,
+      );
+      setIsRevisionOpen(true);
+      setRevisionWords([]);
+      return;
     }
 
+    setMessageForRevision("");
+
     const shuffled = [...savedWords].sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, Math.min(5, shuffled.length));
+    const selected = shuffled.slice(0, REVISION_COUNT);
 
     setRevisionWords(selected);
     setRevealed({});
@@ -116,7 +123,14 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
         </button>
         <button
           onClick={startRevision}
-          className="mt-4 ml-2 inline-flex items-center gap-2 rounded-lg border border-gray-600 bg-red-900 px-4 py-2 text-sm text-gray-200 hover:bg-gray-800 transition"
+          // disabled={savedWords.length < 3}
+          className={`mt-4 ml-2 inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm transition
+    ${
+      savedWords.length < 3
+        ? "border-gray-700 bg-gray-800 text-gray-500 cursor-not-allowed"
+        : "border-gray-600 bg-red-900 text-gray-200 hover:bg-gray-800"
+    }
+  `}
         >
           Revision
         </button>
