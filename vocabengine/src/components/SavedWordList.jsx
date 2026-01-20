@@ -20,6 +20,11 @@ const LEVELS = [
 export default function SavedWordsList({ savedWords, deleteSavedWord }) {
   const [openIndex, setOpenIndex] = useState(null);
 
+  const [isRevisionOpen, setIsRevisionOpen] = useState(false);
+  const [revisionWords, setRevisionWords] = useState([]);
+  const [revealed, setRevealed] = useState({});
+  const [messageForRevision, setMessageForRevision] = useState("");
+
   const APP_URL = `https://vocabengine-7pkj.vercel.app/`;
 
   /* Stats + XP calculation */
@@ -70,6 +75,20 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
     return getStreaks(savedWords);
   }, [savedWords]);
 
+  const startRevision = () => {
+    if (savedWords.length === 0) {
+      // console.log("Save more words");
+      setMessageForRevision("Save more words , words not found");
+    }
+
+    const shuffled = [...savedWords].sort(() => 0.5 - Math.random());
+    const selected = shuffled.slice(0, Math.min(5, shuffled.length));
+
+    setRevisionWords(selected);
+    setRevealed({});
+    setIsRevisionOpen(true);
+  };
+
   return (
     <div id="saved" className="mt-10">
       <h2 className="mb-4 text-xl font-mont text-gray-200">Words collection</h2>
@@ -95,8 +114,10 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
         >
           Share progress on X
         </button>
-
-        <button className="mt-4 ml-2 inline-flex items-center gap-2 rounded-lg border border-gray-600 bg-gray-900 px-4 py-2 text-sm text-gray-200 hover:bg-gray-800 transition">
+        <button
+          onClick={startRevision}
+          className="mt-4 ml-2 inline-flex items-center gap-2 rounded-lg border border-gray-600 bg-red-900 px-4 py-2 text-sm text-gray-200 hover:bg-gray-800 transition"
+        >
           Revision
         </button>
 
@@ -112,6 +133,56 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
           </span>
         </div>
       </div>
+
+      {isRevisionOpen && (
+        <div className="mt-6 rounded-xl border border-indigo-500/30 bg-indigo-900/20 p-5">
+          <h3 className="mb-4 text-lg font-semibold text-indigo-300">
+            Today’s Revision
+          </h3>
+          {messageForRevision && (
+            <>
+              <h1>{messageForRevision}</h1>
+            </>
+          )}
+
+          <div className="space-y-3">
+            {revisionWords.map((item, idx) => (
+              <div
+                key={item.word}
+                className="rounded-lg border border-gray-700 bg-gray-900/60 p-4"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-indigo-400 font-medium text-lg">
+                    {item.word}
+                  </span>
+
+                  <button
+                    onClick={() =>
+                      setRevealed((prev) => ({ ...prev, [idx]: true }))
+                    }
+                    className="text-xs text-gray-400 hover:text-gray-200"
+                  >
+                    Reveal
+                  </button>
+                </div>
+
+                {revealed[idx] && (
+                  <p className="mt-2 text-sm text-gray-400">
+                    {item.meanings?.[0]?.definitions?.[0]}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={() => setIsRevisionOpen(false)}
+            className="mt-4 text-xs text-red-400 hover:text-gray-200"
+          >
+            Close revision
+          </button>
+        </div>
+      )}
 
       {savedWords.length === 0 ? (
         <div className="rounded-xl border border-dashed border-gray-700 bg-gray-900/40 p-6 text-center">
@@ -181,6 +252,7 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
           })}
         </div>
       )}
+
       <div className="mt-3 flex gap-3 text-sm">
         <span className="rounded-full bg-orange-400/10 px-3 py-1 text-orange-300">
           {streaks.current} day streak
