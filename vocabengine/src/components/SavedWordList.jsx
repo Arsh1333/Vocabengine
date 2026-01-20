@@ -96,6 +96,10 @@ export default function SavedWordsList({ savedWords, deleteSavedWord }) {
           Share progress on X
         </button>
 
+        <button className="mt-4 ml-2 inline-flex items-center gap-2 rounded-lg border border-gray-600 bg-gray-900 px-4 py-2 text-sm text-gray-200 hover:bg-gray-800 transition">
+          Revision
+        </button>
+
         <div className="mt-4 flex flex-wrap gap-3 text-sm">
           <span className="rounded-full bg-purple-400/10 px-3 py-1 text-purple-300">
             Rare: {stats.Rare}

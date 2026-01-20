@@ -28,10 +28,13 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div className="lg:col-span-2">
-            <h4 className="text-sm font-semibold text-neutral-300 uppercase tracking-wider mb-6">
+            {/* <h4 className="text-sm font-semibold text-neutral-300 uppercase tracking-wider mb-6">
               Quick Links
-            </h4>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+            </h4> */}
+            <div className=" text-sm">
+              <h4 className="text-sm font-semibold text-neutral-300 uppercase tracking-wider mb-6">
+                Quick Links
+              </h4>
               <a
                 href="https://github.com/Arsh1333/Vocabengine"
                 target="_blank"
@@ -42,7 +45,7 @@ export default function Footer() {
                   GitHub
                 </span>
               </a>
-              <a
+              {/* <a
                 href="https://x.com/ArshPawar5"
                 target="_blank"
                 rel="noreferrer"
@@ -51,7 +54,7 @@ export default function Footer() {
                 <span className="text-neutral-400 group-hover:text-neutral-100 transition-colors">
                   X
                 </span>
-              </a>
+              </a> */}
             </div>
           </div>
         </div>

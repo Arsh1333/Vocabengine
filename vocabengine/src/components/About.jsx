@@ -11,7 +11,7 @@ export default function About() {
       <p className="text-sm font-mont leading-relaxed text-gray-400 sm:text-base">
         This app helps you build vocabulary the same way you naturally read.
         Instead of memorizing word lists, you paste real English content and
-        interact with unfamiliar words directly in context.
+        interact with unfamiliar words directly.
       </p>
 
       <div className="my-5 h-px bg-gray-700/60" />
