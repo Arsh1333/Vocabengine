@@ -73,7 +73,7 @@ _Name the technologies used in the project._
 
 ## Acknowledgments
 
-_Inspired by:_
+_Thanks for introducing me to NLP:_
 
 * [Arnav Pawar](https://github.com/Arnav1333)
 
